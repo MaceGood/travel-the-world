@@ -1,0 +1,13 @@
+.logo2 {
+  display: none;
+}
+
+@media screen and (max-width: 650px) {
+  .logo {
+    display: none;
+  }
+
+  .logo2 {
+    display: block;
+  }
+}

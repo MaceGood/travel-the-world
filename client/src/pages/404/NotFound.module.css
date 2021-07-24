@@ -1,0 +1,15 @@
+.nothingFound {
+  width: 100%;
+  min-height: 80vh;
+  margin-top: 1rem;
+}
+
+.nothingFoundContainer {
+  align-items: center;
+  text-align: center;
+}
+
+.nothingFoundImage {
+  width: 80%;
+  height: 50vh;
+}
