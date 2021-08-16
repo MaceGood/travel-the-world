@@ -19,18 +19,27 @@ import {
   MenuItem,
   ListItemIcon,
   Zoom,
+  DialogActions,
+  TextField,
+  DialogContentText,
+  DialogContent,
+  DialogTitle,
+  Dialog,
+  Snackbar,
 } from "@material-ui/core";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { useState, useRef, useEffect } from "react";
 import moment from "moment";
-import { deletePost, likePost } from "../../../actions/posts";
+import { deletePost, likePost, reportPost } from "../../../actions/posts";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FlagIcon from "@material-ui/icons/Flag";
+import Alerts from "../../Alerts";
+import Alert from "@material-ui/lab/Alert";
 // import MuiAlert from "@material-ui/lab/Alert";
 
 // function Alert(props) {
@@ -40,6 +49,10 @@ import FlagIcon from "@material-ui/icons/Flag";
 const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [openRep, setOpenRep] = useState(false);
+  const [repMsg, setRepMsg] = useState({
+    reason: "",
+  });
   const anchorRef = useRef(null);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -48,6 +61,15 @@ const Post = ({ post, setCurrentId }) => {
   const [likes, setLikes] = useState(post?.likes);
   const userId = user?.result.googleId || user?.result?._id;
   const liked = post.likes.find((like) => like === userId);
+  const [openRepSuc, setOpenRepSuc] = useState(false);
+
+  const handleOpenRep = () => {
+    setOpenRep(true);
+  };
+
+  const handleCloseRep = () => {
+    setOpenRep(false);
+  };
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -123,6 +145,26 @@ const Post = ({ post, setCurrentId }) => {
     );
   };
 
+  const handleClickReportSuccess = () => {
+    setOpenRepSuc(true);
+  };
+
+  const handleCloseReportSuccess = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenRepSuc(false);
+  };
+
+  const handleReport = async (e) => {
+    e.preventDefault();
+    dispatch(reportPost(post._id, { ...repMsg }));
+    setRepMsg("");
+    handleCloseRep();
+    handleClickReportSuccess();
+  };
+
   return (
     <Grid item xs={12} sm={6} md={6} lg={4}>
       <Zoom in={load}>
@@ -148,12 +190,59 @@ const Post = ({ post, setCurrentId }) => {
                 ) : (
                   <>
                     {user ? (
-                      <IconButton>
-                        <FlagIcon style={{ fontSize: "1.5rem" }} />
-                      </IconButton>
+                      <>
+                        <IconButton onClick={handleOpenRep}>
+                          <FlagIcon style={{ fontSize: "1.5rem" }} />
+                        </IconButton>
+
+                        <Dialog
+                          open={openRep}
+                          onClose={handleCloseRep}
+                          aria-labelledby="form-dialog-title"
+                        >
+                          <DialogTitle id="form-dialog-title">
+                            Report '{post.title}'
+                          </DialogTitle>
+                          <DialogContent>
+                            <DialogContentText>
+                              Please tell us why you are reporting this post.
+                            </DialogContentText>
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              label="Reason for Reporting"
+                              type="text"
+                              fullWidth
+                              value={repMsg.reason}
+                              onChange={(e) =>
+                                setRepMsg({ repMsg, reason: e.target.value })
+                              }
+                            />
+                            {repMsg.reason === "" && (
+                              <Alerts
+                                message="Please enter a reason for reporting this post"
+                                severity="error"
+                                style={{ marginTop: 10, marginBottom: 10 }}
+                              />
+                            )}
+                          </DialogContent>
+                          <DialogActions>
+                            <Button onClick={handleCloseRep} color="primary">
+                              Cancel
+                            </Button>
+                            <Button
+                              onClick={handleReport}
+                              color="primary"
+                              disabled={repMsg.reason === ""}
+                            >
+                              Report
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                      </>
                     ) : null}
 
-                    {/* <Snackbar
+                    <Snackbar
                       open={openRepSuc}
                       autoHideDuration={6000}
                       onClose={handleCloseReportSuccess}
@@ -164,7 +253,7 @@ const Post = ({ post, setCurrentId }) => {
                       >
                         You reported '{post.title}' successfully.
                       </Alert>
-                    </Snackbar> */}
+                    </Snackbar>
                   </>
                 )}
               </>

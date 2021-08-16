@@ -92,7 +92,7 @@ export const reset = async (req, res) => {
       }).save();
     }
 
-    const link = `http://localhost:3000/auth/change-password/${user._id}/${token.token}`;
+    const link = `http://localhost:3000/auth/reset/${user._id}/${token.token}`;
     const result = await sendEmail(user.email, link);
 
     res.status(200).json({ result, token });

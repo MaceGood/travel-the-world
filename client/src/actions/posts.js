@@ -48,3 +48,12 @@ export const likePost = (id) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const reportPost = (id, reason) => async (dispatch) => {
+  try {
+    const { data } = await api.reportPost(id, reason);
+    dispatch({ type: actionTypes.REPORT, payload: data });
+  } catch (error) {
+    console.log(error);
+  }
+};

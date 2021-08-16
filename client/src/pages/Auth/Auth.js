@@ -332,11 +332,6 @@ const Auth = () => {
                             setRecEmail({ recEmail, email: e.target.value })
                           }
                         />
-                        {/* <Alerts
-                            message="Please enter a valid email address"
-                            severity="error"
-                            style={{ marginTop: 10, marginBottom: 10 }}
-                          /> */}
                       </DialogContent>
                       <DialogActions>
                         <Button onClick={handleClose} color="primary">
@@ -345,7 +340,10 @@ const Auth = () => {
                         <Button
                           onClick={handleRecover}
                           color="primary"
-                          disabled={recEmail.email === ""}
+                          disabled={
+                            validateEmail(recEmail.email) === false ||
+                            recEmail.email === ""
+                          }
                         >
                           Recover
                         </Button>

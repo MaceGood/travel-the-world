@@ -27,7 +27,7 @@ function App() {
           <Navbar />
           <Switch>
             <Route
-              path="/auth/change-password/:userId/:token"
+              path="/auth/reset/:userId/:token"
               component={ChangePassword}
             />
             <Route path="/auth" exact component={Auth} />

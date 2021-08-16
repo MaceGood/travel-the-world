@@ -19,10 +19,11 @@ API.interceptors.request.use(
 
 export const createPost = (newPost) => API.post("/posts", newPost);
 export const getPosts = () => API.get("/posts");
-export const deletePost = (post) =>
-  API.delete(`/posts/${post}`);
+export const deletePost = (post) => API.delete(`/posts/${post}`);
 export const updatePost = (id, post) => API.patch(`/posts/${id}`, post);
 export const likePost = (id) => API.patch(`/posts/${id}/like`);
+export const reportPost = (id, reason) =>
+  API.post(`/posts/${id}/report`, reason);
 
 export const login = (userData) => API.post("/auth/login", userData);
 export const signup = (userData) => API.post("/auth/signup", userData);

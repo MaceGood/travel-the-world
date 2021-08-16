@@ -3,14 +3,11 @@ const { Schema } = mongoose;
 
 const reportSchema = new Schema({
   name: String,
-  user: String,
   email: String,
-  userEmail: String,
-  userImage: String,
   profilePic: String,
   reason: String,
   image: String,
-  tags: String,
+  tags: [String],
   title: String,
   message: String,
   date: { type: Date, default: Date.now },

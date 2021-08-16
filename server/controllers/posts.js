@@ -11,6 +11,7 @@ export const createPost = async (req, res) => {
     ...post,
     user: req.userId,
     userImage: req.userId,
+    userEmail: req.userId,
   });
   try {
     await newPost.save();
@@ -34,7 +35,7 @@ export const deletePost = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send({ error: "No Post with that id" });
   await Post.findByIdAndRemove(id);
-  res.json({ error: "Post Deleted" });
+  res.json({ message: "Post Deleted" });
 };
 
 export const updatePost = async (req, res) => {
@@ -78,7 +79,31 @@ export const likePost = async (req, res) => {
 
 export const reportPost = async (req, res) => {
   const { id } = req.params;
-  const reason = req.body;
+  const { reason } = req.body;
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(404).send("No post with that id");
+
+    const post = await Post.findById(id);
+
+    const report = new Report({
+      id,
+      reason,
+      name: post.name,
+      profilePic: post.profilePic,
+      email: post.email,
+      image: post.image,
+      tags: post.tags,
+      title: post.title,
+      message: post.message,
+    });
+    await report.save();
+    res.status(201).json(report);
+  } catch (error) {
+    res.status(409).json({ error: "Error while reporting that post" });
+    console.log(error);
+  }
 };
 
 export default router;

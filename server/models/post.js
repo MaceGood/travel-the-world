@@ -7,6 +7,8 @@ const postSchema = new Schema({
   title: String, // String is shorthand for {type: String}
   userImage: String,
   profilePic: String,
+  userEmail: String,
+  email: String,
   message: String,
   tags: [String],
   likes: { type: [String], default: [] },

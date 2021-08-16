@@ -65,6 +65,7 @@ const Form = ({ currentId, setCurrentId }) => {
             {
               ...postData,
               name: userData?.result?.name,
+              email: userData?.result?.email,
               profilePic:
                 userData?.result.imageUrl || userData?.result.name.charAt(0),
             },

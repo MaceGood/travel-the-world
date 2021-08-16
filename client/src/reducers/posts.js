@@ -15,6 +15,8 @@ export default function authReducer(
           (postToDelete) => postToDelete.id !== action.payload.id
         ),
       };
+    case actionTypes.REPORT:
+      return { ...state, reports: [state.reports, action.payload] };
     case actionTypes.CREATE_POST:
       return { ...state, posts: [state.posts, action.payload] };
     case actionTypes.UPDATE:
