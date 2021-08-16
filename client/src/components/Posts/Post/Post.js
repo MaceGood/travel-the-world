@@ -19,63 +19,35 @@ import {
   MenuItem,
   ListItemIcon,
   Zoom,
-  TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  Snackbar,
 } from "@material-ui/core";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-// import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { useState, useRef, useEffect } from "react";
 import moment from "moment";
-import { deletePost } from "../../../actions/posts";
+import { deletePost, likePost } from "../../../actions/posts";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FlagIcon from "@material-ui/icons/Flag";
-import MuiAlert from "@material-ui/lab/Alert";
+// import MuiAlert from "@material-ui/lab/Alert";
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+// function Alert(props) {
+//   return <MuiAlert elevation={6} variant="filled" {...props} />;
+// }
 
 const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [openRep, setOpenRep] = useState(false);
-  const [openRepSuc, setOpenRepSuc] = useState(false);
-  const [value, setValue] = useState("");
   const anchorRef = useRef(null);
   const dispatch = useDispatch();
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("user"));
   let load = true;
-
-  const handleClickReportSuccess = () => {
-    setOpenRepSuc(true);
-  };
-
-  const handleCloseReportSuccess = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpenRepSuc(false);
-  };
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+  const [likes, setLikes] = useState(post?.likes);
+  const userId = user?.result.googleId || user?.result?._id;
+  const liked = post.likes.find((like) => like === userId);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -117,17 +89,38 @@ const Post = ({ post, setCurrentId }) => {
     window.scrollTo({ top: 50, behavior: "smooth" });
   };
 
-  const handleClickOpen = () => {
-    setOpenRep(true);
+  const handleLike = async () => {
+    dispatch(likePost(post._id));
+
+    if (liked) {
+      setLikes(post.likes.filter((id) => id !== userId));
+    } else {
+      setLikes([...post.likes, userId]);
+    }
   };
 
-  const handleCloseReport = () => {
-    setOpenRep(false);
-  };
+  const LikeCount = () => {
+    if (likes.length > 0) {
+      return likes.find((like) => like === userId) ? (
+        <>
+          <FavoriteIcon style={{ fontSize: "1.8rem", color: "#f44336" }} />
+          <h1 style={{ fontSize: "1.4rem" }}>{likes.length}</h1>
+        </>
+      ) : (
+        <>
+          <FavoriteBorderIcon
+            style={{ fontSize: "1.8rem", color: "#f44336" }}
+          />
+          <h1 style={{ fontSize: "1.4rem" }}>{likes.length}</h1>
+        </>
+      );
+    }
 
-  const handleReport = (e) => {
-    setOpenRep(false);
-    handleClickReportSuccess();
+    return (
+      <>
+        <FavoriteBorderIcon style={{ fontSize: "1.8rem", color: "#f44336" }} />
+      </>
+    );
   };
 
   return (
@@ -154,93 +147,13 @@ const Post = ({ post, setCurrentId }) => {
                   </IconButton>
                 ) : (
                   <>
-                    <IconButton onClick={handleClickOpen}>
-                      <FlagIcon style={{ fontSize: "1.5rem" }} />
-                    </IconButton>
+                    {user ? (
+                      <IconButton>
+                        <FlagIcon style={{ fontSize: "1.5rem" }} />
+                      </IconButton>
+                    ) : null}
 
-                    <Dialog
-                      open={openRep}
-                      onClose={handleCloseReport}
-                      aria-labelledby="form-dialog-title"
-                    >
-                      <DialogTitle id="form-dialog-title">
-                        Report '{post.title}'
-                      </DialogTitle>
-                      <DialogContent>
-                        <DialogContentText>
-                          Please tell us why you are reporting this post.
-                        </DialogContentText>
-
-                        <FormControl component="fieldset">
-                          <RadioGroup
-                            aria-label="gender"
-                            name="gender1"
-                            value={value}
-                            onChange={handleChange}
-                          >
-                            <FormControlLabel
-                              value="Scam"
-                              control={<Radio />}
-                              label="Scam"
-                            />
-                            <FormControlLabel
-                              value="Spam"
-                              control={<Radio />}
-                              label="Spam"
-                            />
-                            <FormControlLabel
-                              value="Hateful or abusive content"
-                              control={<Radio />}
-                              label="Hateful or abusive content"
-                            />
-                            <FormControlLabel
-                              value="Promotes terrorism"
-                              control={<Radio />}
-                              label="Promotes terrorism"
-                            />
-
-                            <FormControlLabel
-                              value="Harmful or dangerous acts"
-                              control={<Radio />}
-                              label="Harmful or dangerous acts"
-                            />
-                            <FormControlLabel
-                              value="Violent or repulsive content"
-                              control={<Radio />}
-                              label="Violent or repulsive content"
-                            />
-                            <FormControlLabel
-                              value="Other"
-                              control={<Radio />}
-                              label="Other"
-                            />
-                            {value === "Other" && (
-                              <TextField
-                                autoFocus
-                                margin="dense"
-                                id="other"
-                                variant="outlined"
-                                label="Message"
-                                type="text"
-                                fullWidth
-                                multiline
-                                rows={4}
-                              />
-                            )}
-                          </RadioGroup>
-                        </FormControl>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={handleCloseReport} color="primary">
-                          Cancel
-                        </Button>
-                        <Button onClick={handleReport} color="primary">
-                          Report
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-
-                    <Snackbar
+                    {/* <Snackbar
                       open={openRepSuc}
                       autoHideDuration={6000}
                       onClose={handleCloseReportSuccess}
@@ -251,7 +164,7 @@ const Post = ({ post, setCurrentId }) => {
                       >
                         You reported '{post.title}' successfully.
                       </Alert>
-                    </Snackbar>
+                    </Snackbar> */}
                   </>
                 )}
               </>
@@ -319,11 +232,11 @@ const Post = ({ post, setCurrentId }) => {
               </Typography>
               <Typography>
                 {" "}
-                {post.message.length < 130 ? (
+                {post?.message?.length < 130 ? (
                   post.message
                 ) : (
                   <span>
-                    {post.message.substring(0, 130)}
+                    {post?.message?.substring(0, 130)}
                     {"... "}
                     <span style={{ color: "blue" }}> Show More...</span>{" "}
                   </span>
@@ -332,22 +245,17 @@ const Post = ({ post, setCurrentId }) => {
             </CardContent>
           </CardActionArea>
 
-          {user !== null ? (
-            <Grid>
-              <CardActions style={{ justifyContent: "space-between" }}>
-                <Button>
-                  <FavoriteBorderIcon
-                    style={{ fontSize: "1.8rem", color: "#f44336" }}
-                  />
-                  <h1 style={{ fontSize: "1.6rem" }}>10</h1>
-                </Button>
+          <Grid>
+            <CardActions style={{ justifyContent: "space-between" }}>
+              <Button onClick={handleLike} disabled={!user}>
+                <LikeCount />
+              </Button>
 
-                <Button variant="outlined" color="secondary">
-                  reserve ${post.price} / night
-                </Button>
-              </CardActions>
-            </Grid>
-          ) : null}
+              <Button variant="outlined" color="secondary" disabled={!user}>
+                reserve ${post.price} / night
+              </Button>
+            </CardActions>
+          </Grid>
         </Card>
       </Zoom>
     </Grid>

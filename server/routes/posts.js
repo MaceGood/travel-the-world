@@ -4,6 +4,8 @@ import {
   getPosts,
   deletePost,
   updatePost,
+  likePost,
+  reportPost,
 } from "../controllers/posts.js";
 import auth from "../middleware/auth.js";
 
@@ -13,5 +15,7 @@ router.get("/", getPosts);
 router.post("/", auth, createPost);
 router.delete("/:id", auth, deletePost);
 router.patch("/:id", auth, updatePost);
+router.patch("/:id/like", auth, likePost);
+router.post("/:id/report", reportPost);
 
 export default router;

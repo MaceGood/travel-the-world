@@ -8,17 +8,25 @@ import {
   FormControlLabel,
   Checkbox,
   Zoom,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Snackbar,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Input from "./Input";
+import Input from "../../components/Input";
 import { useState, useEffect } from "react";
 import Alerts from "../../components/Alerts";
 import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
-import { signup, login } from "../../actions/auth";
+import { signup, login, reset } from "../../actions/auth";
 import { GoogleLogin } from "react-google-login";
 import GoogleButton from "react-google-button";
 import * as actionTypes from "../../constants/actionTypes";
+import Alert from "@material-ui/lab/Alert";
 
 const initialState = {
   firstName: "",
@@ -28,6 +36,12 @@ const initialState = {
   confirmPassword: "",
 };
 
+function validateEmail(email) {
+  const re =
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
 const Auth = () => {
   const classes = useStyles();
   const [userData, setUserData] = useState(initialState);
@@ -36,9 +50,13 @@ const Auth = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   // const location = useLocation();
-  // let error = JSON.parse(sessionStorage.getItem("error"));
-  // const [msg, setMsg] = useState();
+  let error = JSON.parse(sessionStorage.getItem("error"));
+  const [msg, setMsg] = useState();
   let load = true;
+  const [open, setOpen] = useState(false);
+  const [recEmail, setRecEmail] = useState({
+    email: "",
+  });
 
   const userDataLogin = userData.email && userData.password;
   const userDataSignup =
@@ -81,14 +99,43 @@ const Auth = () => {
     }
   };
 
-  // useEffect(() => {
-  //   let err = error?.error;
-  //   setMsg(error);
-  //   return () => {
-  //     error = null;
-  //     err = null;
-  //   };
-  // }, []);
+  useEffect(() => {
+    let err = error?.error;
+    setMsg(error);
+    return () => {
+      error = null;
+      err = null;
+    };
+  }, []);
+
+  const [openRepSuc, setOpenRepSuc] = useState(false);
+  const handleClickReportSuccess = () => {
+    setOpenRepSuc(true);
+  };
+
+  const handleCloseReportSuccess = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenRepSuc(false);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleRecover = async (e) => {
+    e.preventDefault();
+    dispatch(reset({ ...recEmail }));
+    handleClose();
+    setRecEmail({ email: "" });
+    handleClickReportSuccess();
+  };
 
   return (
     <Container component="main" maxWidth="sm">
@@ -211,13 +258,13 @@ const Auth = () => {
                 )}
               </>
             )}
-            {/* {error?.error ? (
+            {error?.error ? (
               <Alerts
                 message={error?.error}
                 severity="error"
                 style={{ marginTop: 10, marginBottom: 10 }}
               />
-            ) : null} */}
+            ) : null}
 
             <GoogleLogin
               clientId="696421807959-44lcp7jetp0ctfhb0fmhk18kgbo5mo0p.apps.googleusercontent.com"
@@ -235,13 +282,76 @@ const Auth = () => {
             <Grid container>
               <Grid item xs>
                 {!isSignUp && (
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    className={classes.button}
-                  >
-                    Forgot password?
-                  </Button>
+                  <>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      className={classes.button}
+                      onClick={handleClickOpen}
+                    >
+                      Forgot password?
+                    </Button>
+
+                    <Snackbar
+                      open={openRepSuc}
+                      autoHideDuration={10000}
+                      onClose={handleCloseReportSuccess}
+                    >
+                      <Alert
+                        onClose={handleCloseReportSuccess}
+                        severity="success"
+                      >
+                        Email has been sent to your email address, if the email
+                        doesn't appear please check your spam box.
+                      </Alert>
+                    </Snackbar>
+
+                    <Dialog
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="form-dialog-title"
+                    >
+                      <DialogTitle id="form-dialog-title">
+                        Account Recovery
+                      </DialogTitle>
+                      <DialogContent>
+                        <DialogContentText>
+                          Enter the email from the account which you forgot your
+                          password, after sending go check your email
+                        </DialogContentText>
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          id="name"
+                          placeholder="name@example.com"
+                          label="Email Address"
+                          type="email"
+                          fullWidth
+                          value={recEmail.email}
+                          onChange={(e) =>
+                            setRecEmail({ recEmail, email: e.target.value })
+                          }
+                        />
+                        {/* <Alerts
+                            message="Please enter a valid email address"
+                            severity="error"
+                            style={{ marginTop: 10, marginBottom: 10 }}
+                          /> */}
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                          Cancel
+                        </Button>
+                        <Button
+                          onClick={handleRecover}
+                          color="primary"
+                          disabled={recEmail.email === ""}
+                        >
+                          Recover
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </>
                 )}
               </Grid>
               <Grid item onClick={handleSwitch}>

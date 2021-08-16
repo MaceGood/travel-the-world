@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import postsRouter from "./routes/posts.js";
 import authRouter from "./routes/auth.js";
 import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.use("/auth", authRouter);
 
 const PORT = process.env.PORT || 5000;
 const CONNECTION_URL =
-  "mmongodb+srv://mace:proekt123@cluster0.sowid.mongodb.net/proekt?retryWrites=true&w=majority";
+  "mmongodb+srv://mace:proekt123@cluster0.sowid.mongodb.net/travelTheWorld?retryWrites=true&w=majority";
 
 mongoose
   .connect(CONNECTION_URL, {

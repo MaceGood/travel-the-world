@@ -86,7 +86,7 @@ const Navbar = () => {
       className={classes.appBar}
     >
       <Toolbar className={classes.toolbar}>
-        <Link to="/">
+        <Link to="/" onClick={() => sessionStorage.clear()}>
           <img
             src={logo}
             alt="Travel The World"
@@ -164,6 +164,7 @@ const Navbar = () => {
                           </ListItemIcon>
                           Profile
                         </MenuItem>
+
                         <MenuItem onClick={handleClose}>
                           <ListItemIcon style={{ marginRight: "-1.5rem" }}>
                             <SettingsIcon />

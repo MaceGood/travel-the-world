@@ -1,6 +1,8 @@
 import * as api from "../api/index";
 import * as actionTypes from "../constants/actionTypes";
 
+const user = JSON.parse(localStorage.getItem("user"));
+
 export const createPost = (post, history) => async (dispatch) => {
   try {
     const { data } = await api.createPost(post);
@@ -33,6 +35,15 @@ export const updatePost = (id, post) => async (dispatch) => {
   try {
     const { data } = await api.updatePost(id, post);
     dispatch({ type: actionTypes.UPDATE, payload: data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const likePost = (id) => async (dispatch) => {
+  try {
+    const { data } = await api.likePost(id, user?.token);
+    dispatch({ type: actionTypes.LIKE, payload: data });
   } catch (error) {
     console.log(error);
   }

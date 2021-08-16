@@ -22,5 +22,10 @@ export const getPosts = () => API.get("/posts");
 export const deletePost = (postToDelete) =>
   API.delete(`/posts/${postToDelete}`);
 export const updatePost = (id, post) => API.patch(`/posts/${id}`, post);
+export const likePost = (id) => API.patch(`/posts/${id}/like`);
+
 export const login = (userData) => API.post("/auth/login", userData);
 export const signup = (userData) => API.post("/auth/signup", userData);
+export const reset = (email) => API.post("/auth/reset", email);
+export const changepw = (userId, token, pw) =>
+  API.post(`/auth/reset/${userId}/${token}`, pw);

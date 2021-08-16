@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const userSchema = new Schema({
   name: String,
   // name: {
-  type: String,
+  // type: String,
   // required: [true, "Enter a username."],
   // validate: [
   //   validator.isAlphanumeric,
@@ -27,5 +27,5 @@ const userSchema = new Schema({
   id: String,
 });
 
-const UserDetails = mongoose.model("UserDetails", userSchema);
-export default UserDetails;
+const User = mongoose.model("User", userSchema);
+export default User;

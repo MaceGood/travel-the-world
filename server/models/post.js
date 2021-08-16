@@ -9,10 +9,11 @@ const postSchema = new Schema({
   profilePic: String,
   message: String,
   tags: [String],
+  likes: { type: [String], default: [] },
   image: String,
   price: Number,
   date: { type: Date, default: Date.now },
 });
 
-const PostDetails = mongoose.model("PostDetails", postSchema);
-export default PostDetails;
+const Post = mongoose.model("Post", postSchema);
+export default Post;

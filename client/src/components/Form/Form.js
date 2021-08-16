@@ -64,10 +64,9 @@ const Form = ({ currentId, setCurrentId }) => {
           createPost(
             {
               ...postData,
-              username: userData?.result?.username,
+              name: userData?.result?.name,
               profilePic:
-                userData?.result.imageUrl ||
-                userData?.result?.username.charAt(0),
+                userData?.result.imageUrl || userData?.result.name.charAt(0),
             },
             history
           )

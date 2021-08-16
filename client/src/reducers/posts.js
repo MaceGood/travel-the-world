@@ -2,7 +2,7 @@
 import * as actionTypes from "../constants/actionTypes";
 
 export default function authReducer(
-  state = { posts: [], loading: false },
+  state = { posts: [], reports: [], loading: false },
   action
 ) {
   switch (action.type) {
@@ -18,12 +18,14 @@ export default function authReducer(
     case actionTypes.CREATE_POST:
       return { ...state, posts: [state.posts, action.payload] };
     case actionTypes.UPDATE:
+    case actionTypes.LIKE:
       return {
         ...state,
         posts: state.posts.map((post) =>
           post._id === action.payload._id ? action.payload : post
         ),
       };
+
     default:
       return state;
   }

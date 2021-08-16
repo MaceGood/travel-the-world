@@ -11,9 +11,10 @@ import Home from "./pages/Home/Home";
 import { useState, useEffect } from "react";
 import Loading from "./pages/Loading/Loading";
 import NotFound from "./pages/404/404";
+import ChangePassword from "./pages/Auth/ChangePassword";
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
@@ -25,6 +26,10 @@ function App() {
         <Router>
           <Navbar />
           <Switch>
+            <Route
+              path="/auth/change-password/:userId/:token"
+              component={ChangePassword}
+            />
             <Route path="/auth" exact component={Auth} />
             <Route path="/posts" exact component={Home} />
             <Route path="/" exact component={() => <Redirect to="/posts" />} />
