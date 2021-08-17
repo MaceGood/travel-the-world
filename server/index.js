@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import postsRouter from "./routes/posts.js";
 import authRouter from "./routes/auth.js";
 import dotenv from "dotenv";
+import ejs from "ejs";
 dotenv.config();
 
 const app = express();
@@ -12,6 +13,8 @@ const app = express();
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
+
+app.set("view engine", "ejs");
 
 app.use("/posts", postsRouter);
 app.use("/auth", authRouter);

@@ -30,7 +30,7 @@ const ChangePassword = () => {
       password: "",
       confirmPassword: "",
     });
-    history.push("/posts");
+    history.push("/auth");
   };
 
   useEffect(() => {

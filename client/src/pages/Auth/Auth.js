@@ -135,6 +135,10 @@ const Auth = () => {
     handleClose();
     setRecEmail({ email: "" });
     handleClickReportSuccess();
+
+    setTimeout(() => {
+      sessionStorage.clear();
+    }, 5000);
   };
 
   return (
@@ -299,10 +303,11 @@ const Auth = () => {
                     >
                       <Alert
                         onClose={handleCloseReportSuccess}
-                        severity="success"
+                        severity={error?.error ? "error" : "success"}
                       >
-                        Email has been sent to your email address, if the email
-                        doesn't appear please check your spam box.
+                        {error?.error
+                          ? `${error?.error}, please try again.`
+                          : "Email has been sent to your email address, if the email doesn't appear please check your spam box."}
                       </Alert>
                     </Snackbar>
 

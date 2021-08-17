@@ -93,7 +93,7 @@ export const reset = async (req, res) => {
     }
 
     const link = `http://localhost:3000/auth/reset/${user._id}/${token.token}`;
-    const result = await sendEmail(user.email, link);
+    const result = await sendEmail(user.email, link, user.name, link);
 
     res.status(200).json({ result, token });
   } catch (error) {
