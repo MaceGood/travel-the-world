@@ -165,12 +165,14 @@ const Navbar = () => {
                           Profile
                         </MenuItem>
 
-                        <MenuItem onClick={handleClose}>
-                          <ListItemIcon style={{ marginRight: "-1.5rem" }}>
-                            <SettingsIcon />
-                          </ListItemIcon>
-                          Settings
-                        </MenuItem>
+                        <Link to="/settings">
+                          <MenuItem onClick={handleClose}>
+                            <ListItemIcon style={{ marginRight: "-1.5rem" }}>
+                              <SettingsIcon />
+                            </ListItemIcon>
+                            Settings
+                          </MenuItem>
+                        </Link>
                         <MenuItem onClick={logout}>
                           <ListItemIcon style={{ marginRight: "-1.5rem" }}>
                             <ExitToAppIcon />

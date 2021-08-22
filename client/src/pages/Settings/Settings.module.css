@@ -1,0 +1,31 @@
+.settings {
+  display: grid;
+  place-items: center;
+  margin-top: 1rem;
+}
+
+.settings_container {
+  display: grid;
+  place-items: center;
+  margin-top: 1rem;
+  padding: 2rem;
+  width: 60%;
+  max-width: 400px;
+}
+
+.button {
+  background: #46ba74;
+  color: black;
+  border: none;
+  padding: 1rem;
+  font-size: 1.1rem;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.button:hover {
+  opacity: 0.8;
+}

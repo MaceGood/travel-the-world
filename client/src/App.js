@@ -12,9 +12,10 @@ import { useState, useEffect } from "react";
 import Loading from "./pages/Loading/Loading";
 import NotFound from "./pages/404/404";
 import ChangePassword from "./pages/Auth/ChangePassword";
+import Settings from "./pages/Settings/Settings";
 
 function App() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
@@ -31,6 +32,7 @@ function App() {
               component={ChangePassword}
             />
             <Route path="/auth" exact component={Auth} />
+            <Route path="/settings" exact component={Settings} />
             <Route path="/posts" exact component={Home} />
             <Route path="/" exact component={() => <Redirect to="/posts" />} />
             <Route path="/404" component={NotFound} />

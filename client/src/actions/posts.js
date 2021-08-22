@@ -1,8 +1,6 @@
 import * as api from "../api/index";
 import * as actionTypes from "../constants/actionTypes";
 
-const user = JSON.parse(localStorage.getItem("user"));
-
 export const createPost = (post, history) => async (dispatch) => {
   try {
     const { data } = await api.createPost(post);
@@ -41,6 +39,8 @@ export const updatePost = (id, post) => async (dispatch) => {
 };
 
 export const likePost = (id) => async (dispatch) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+
   try {
     const { data } = await api.likePost(id, user?.token);
     dispatch({ type: actionTypes.LIKE, payload: data });
@@ -49,10 +49,11 @@ export const likePost = (id) => async (dispatch) => {
   }
 };
 
-export const reportPost = (id, reason) => async (dispatch) => {
+export const reportPost = (id, reason, history) => async (dispatch) => {
   try {
     const { data } = await api.reportPost(id, reason);
     dispatch({ type: actionTypes.REPORT, payload: data });
+    history.push("/");
   } catch (error) {
     console.log(error);
   }

@@ -5,6 +5,8 @@ const reportSchema = new Schema({
   name: String,
   email: String,
   profilePic: String,
+  reportedBy: String,
+  reportedByEmail: String,
   reason: String,
   image: String,
   tags: [String],

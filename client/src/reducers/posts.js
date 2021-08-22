@@ -1,10 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import * as actionTypes from "../constants/actionTypes";
 
-export default function authReducer(
-  state = { posts: [], reports: [], loading: false },
-  action
-) {
+export default (state = { posts: [], reports: [], loading: false }, action) => {
   switch (action.type) {
     case actionTypes.GET_POSTS:
       return action.payload;
@@ -31,4 +28,4 @@ export default function authReducer(
     default:
       return state;
   }
-}
+};

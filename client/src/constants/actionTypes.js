@@ -8,3 +8,6 @@ export const REPORT = "REPORT";
 export const LIKE = "LIKE";
 export const RESET = "RESET";
 export const CHANGEPW = "CHANGEPW";
+export const CHANGE_EMAIL = "CHANGE_EMAIL";
+export const CHANGE_NAME = "CHANGE_NAME";
+export const CHANGE_PASSWORD = "CHANGE_PASSWORD";

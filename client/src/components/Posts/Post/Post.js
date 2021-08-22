@@ -47,16 +47,18 @@ import Alert from "@material-ui/lab/Alert";
 // }
 
 const Post = ({ post, setCurrentId }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openRep, setOpenRep] = useState(false);
   const [repMsg, setRepMsg] = useState({
     reason: "",
+    reportedBy: "",
+    reportedByEmail: "",
   });
   const anchorRef = useRef(null);
   const dispatch = useDispatch();
   const history = useHistory();
-  const user = JSON.parse(localStorage.getItem("user"));
   let load = true;
   const [likes, setLikes] = useState(post?.likes);
   const userId = user?.result.googleId || user?.result?._id;
@@ -159,7 +161,17 @@ const Post = ({ post, setCurrentId }) => {
 
   const handleReport = async (e) => {
     e.preventDefault();
-    dispatch(reportPost(post._id, { ...repMsg }));
+    dispatch(
+      reportPost(
+        post._id,
+        {
+          ...repMsg,
+          reportedBy: user?.result?.name,
+          reportedByEmail: user?.result?.email,
+        },
+        history
+      )
+    );
     setRepMsg("");
     handleCloseRep();
     handleClickReportSuccess();

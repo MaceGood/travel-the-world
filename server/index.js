@@ -4,8 +4,8 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import postsRouter from "./routes/posts.js";
 import authRouter from "./routes/auth.js";
+import settingsRouter from "./routes/settings.js";
 import dotenv from "dotenv";
-import ejs from "ejs";
 dotenv.config();
 
 const app = express();
@@ -18,6 +18,7 @@ app.set("view engine", "ejs");
 
 app.use("/posts", postsRouter);
 app.use("/auth", authRouter);
+app.use("/settings", settingsRouter);
 
 const PORT = process.env.PORT || 5000;
 const CONNECTION_URL =

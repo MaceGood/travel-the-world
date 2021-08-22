@@ -30,3 +30,10 @@ export const signup = (userData) => API.post("/auth/signup", userData);
 export const reset = (email) => API.post("/auth/reset", email);
 export const changepw = (userId, token, pw) =>
   API.post(`/auth/reset/${userId}/${token}`, pw);
+
+export const changeEmail = (id, email) =>
+  API.patch(`/settings/change-email/${id}`, email);
+export const changeName = (id, name) =>
+  API.patch(`/settings/change-name/${id}`, name);
+export const changePassword = (id, password) =>
+  API.patch(`/settings/change-password/${id}`, password);

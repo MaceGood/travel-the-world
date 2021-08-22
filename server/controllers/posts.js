@@ -79,7 +79,7 @@ export const likePost = async (req, res) => {
 
 export const reportPost = async (req, res) => {
   const { id } = req.params;
-  const { reason } = req.body;
+  const { reason, reportedBy, reportedByEmail } = req.body;
 
   try {
     if (!mongoose.Types.ObjectId.isValid(id))
@@ -90,6 +90,8 @@ export const reportPost = async (req, res) => {
     const report = new Report({
       id,
       reason,
+      reportedBy,
+      reportedByEmail,
       name: post.name,
       profilePic: post.profilePic,
       email: post.email,

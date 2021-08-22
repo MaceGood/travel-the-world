@@ -1,11 +1,20 @@
 import { TextField, Grid } from "@material-ui/core";
 
-const Input = ({ label, name, type, handleChange, half, autoFocus, value }) => {
+const Input = ({
+  label,
+  name,
+  type,
+  handleChange,
+  half,
+  autoFocus,
+  value,
+  style,
+}) => {
   return (
     <Grid item xs={12} sm={half ? 6 : 12}>
       <TextField
-        variant="outlined"
         required
+        style={style}
         fullWidth
         label={label}
         value={value}
