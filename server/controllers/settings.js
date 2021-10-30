@@ -55,7 +55,27 @@ export const changePassword = async (req, res) => {
     res.status(200).json({ result });
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
-    next(error);
+  }
+};
+
+export const changeImage = async (req, res) => {
+  const { image } = req.body;
+  const { id: _id } = req.params;
+
+  try {
+    const user = await User.findById(_id);
+    if (!user) return res.status(404).json({ error: "User does not exist" });
+
+    const result = await User.findByIdAndUpdate(
+      _id,
+      { imageUrl: image },
+      { new: true }
+    );
+
+    res.status(200).json({ result });
+  } catch (error) {
+    res.status(500).json({ error: "Something went wrong" });
+    console.log(error);
   }
 };
 

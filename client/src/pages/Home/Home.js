@@ -15,6 +15,7 @@ const Home = () => {
 
   return (
     <Grid item>
+      z
       <Form currentId={currentId} setCurrentId={setCurrentId} />
       <Posts setCurrentId={setCurrentId} />
     </Grid>

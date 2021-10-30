@@ -123,7 +123,6 @@ const Navbar = () => {
                 {user?.result.name}
               </Typography>
             </Button>
-
             <IconButton
               ref={anchorRef}
               aria-controls={open ? "menu-list-grow" : undefined}
@@ -158,13 +157,6 @@ const Navbar = () => {
                         id="menu-list-grow"
                         onKeyDown={handleListKeyDown}
                       >
-                        <MenuItem onClick={handleClose}>
-                          <ListItemIcon style={{ marginRight: "-1.5rem" }}>
-                            <AccountCircleIcon />
-                          </ListItemIcon>
-                          Profile
-                        </MenuItem>
-
                         <Link to="/settings">
                           <MenuItem onClick={handleClose}>
                             <ListItemIcon style={{ marginRight: "-1.5rem" }}>

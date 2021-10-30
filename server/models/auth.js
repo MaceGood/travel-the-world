@@ -12,6 +12,7 @@ const userSchema = new Schema({
   //   "Usernames may only have letters and numbers.",
   // ],
   // },
+  imageUrl: String,
   email: {
     type: String,
     // require: [true, "Enter an email address."],

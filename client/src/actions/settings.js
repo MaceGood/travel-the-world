@@ -28,3 +28,12 @@ export const changePassword = (id, password) => async (dispatch) => {
     sessionStorage.setItem("error", err);
   }
 };
+
+export const changeImage = (id, email) => async (dispatch) => {
+  try {
+    const { data } = await api.changeImage(id, email);
+    dispatch({ type: actionTypes.CHANGE_IMAGE, payload: data });
+  } catch (error) {
+    console.log(error);
+  }
+};

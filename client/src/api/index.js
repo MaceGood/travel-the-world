@@ -37,3 +37,7 @@ export const changeName = (id, name) =>
   API.patch(`/settings/change-name/${id}`, name);
 export const changePassword = (id, password) =>
   API.patch(`/settings/change-password/${id}`, password);
+export const changeImage = (id, image) =>
+  API.patch(`/settings/change-image/${id}`, image);
+
+
