@@ -20,6 +20,8 @@ app.use("/posts", postsRouter);
 app.use("/auth", authRouter);
 app.use("/settings", settingsRouter);
 
+app.get("/", (req, res) => res.send("rabote"));
+
 const PORT = process.env.PORT || 5000;
 const CONNECTION_URL =
   "mmongodb+srv://mace:proekt123@cluster0.sowid.mongodb.net/travelTheWorld?retryWrites=true&w=majority";
